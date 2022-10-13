@@ -9,15 +9,9 @@ import {
   eNetwork,
   ePolygonNetwork,
   eXDaiNetwork,
-  eNeonNetwork,
 } from './helpers/types';
 import { BUIDLEREVM_CHAINID, COVERAGE_CHAINID } from './helpers/buidler-constants';
-import {
-  NETWORKS_RPC_URL,
-  NETWORKS_DEFAULT_GAS,
-  BLOCK_TO_FORK,
-  buildForkConfig,
-} from './helper-hardhat-config';
+import { NETWORKS_RPC_URL, NETWORKS_DEFAULT_GAS, buildForkConfig } from './helper-hardhat-config';
 
 require('dotenv').config();
 
@@ -28,7 +22,6 @@ import 'hardhat-gas-reporter';
 import 'hardhat-typechain';
 import '@tenderly/hardhat-tenderly';
 import 'solidity-coverage';
-import { fork } from 'child_process';
 
 const SKIP_LOAD = process.env.SKIP_LOAD === 'true';
 const DEFAULT_BLOCK_GAS_LIMIT = 8000000;
@@ -69,8 +62,6 @@ const getCommonNetworkConfig = (networkName: eNetwork, networkId: number) => ({
     count: 20,
   },
 });
-
-let forkMode;
 
 const buidlerConfig: HardhatUserConfig = {
   solidity: {
@@ -158,11 +149,11 @@ const buidlerConfig: HardhatUserConfig = {
       allowUnlimitedContractSize: false,
       timeout: 100000000,
       // @ts-ignore
-      isFork: true
+      isFork: true,
     },
     devnet: {
-      url: 'https://proxy.devnet.neonlabs.org/solana',
-      // url: 'https://devnet.neonevm.org',
+      // url: 'https://proxy.devnet.neonlabs.org/solana',
+      url: 'https://devnet.neonevm.org',
       accounts: [
         '0x41167312f8c46439b2bcc5e5a6af929262efcd20357a56ebcbc455d835d9f084',
         '0x41167312f8c46439b2bcc5e5a6af929262efcd20357a56ebcbc455d835d9f081',
@@ -177,8 +168,8 @@ const buidlerConfig: HardhatUserConfig = {
       // allowUnlimitedContractSize: false,
       timeout: 100000000,
       // @ts-ignore
-      isFork: true
-    }
+      isFork: true,
+    },
   },
 };
 

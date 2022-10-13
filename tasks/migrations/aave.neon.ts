@@ -35,7 +35,6 @@ task('aave:neon', 'Test scenarios on NEON')
 
     let DAI = await getMintableERC20(reserves[0]);
     let AAVE = await getMintableERC20(reserves[1]);
-    let TUSD = await getMintableERC20(reserves[2]);
 
     await DAI.connect(user1).mint(DRE.ethers.utils.parseUnits('10', 6));
     await AAVE.connect(user2).mint(DRE.ethers.utils.parseUnits('10', 6));

@@ -521,7 +521,7 @@ export const deployAllMockTokens = async (verify?: boolean) => {
   for (const tokenSymbol of Object.keys(TokenContractId)) {
     let decimals = '18';
 
-    if (i > 2) break;
+    if (i > 1) break;
     i += 1;
 
     let configData = (<any>protoConfigData)[tokenSymbol];
