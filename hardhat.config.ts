@@ -41,7 +41,7 @@ const UNLIMITED_BYTECODE_SIZE = process.env.UNLIMITED_BYTECODE_SIZE === 'true';
 
 const proxyUrl = process.env.NEON_PROXY_URL;
 // @ts-ignore
-const accounts = process.env.NEON_ACCOUNTS.split(',');
+const neon_accounts = process.env.NEON_ACCOUNTS.split(',');
 // @ts-ignore
 const chainId = parseInt(process.env.NEON_CHAIN_ID) || 111;
 
@@ -151,7 +151,7 @@ const buidlerConfig: HardhatUserConfig = {
     },
     neonlabs: {
       url: proxyUrl,
-      accounts: accounts,
+      accounts: neon_accounts,
       // @ts-ignore
       network_id: chainId,
       chainId: chainId,
@@ -177,8 +177,8 @@ const buidlerConfig: HardhatUserConfig = {
       // allowUnlimitedContractSize: false,
       timeout: 100000000,
       // @ts-ignore
-      isFork: true
-    }
+      isFork: true,
+    },
   },
 };
 
