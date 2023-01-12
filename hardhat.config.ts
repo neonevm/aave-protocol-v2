@@ -39,6 +39,12 @@ const MNEMONIC_PATH = "m/44'/60'/0'/0";
 const MNEMONIC = process.env.MNEMONIC || '';
 const UNLIMITED_BYTECODE_SIZE = process.env.UNLIMITED_BYTECODE_SIZE === 'true';
 
+const proxyUrl = process.env.NEON_PROXY_URL;
+// @ts-ignore
+const accounts = process.env.NEON_ACCOUNTS.split(',');
+// @ts-ignore
+const chainId = parseInt(process.env.NEON_CHAIN_ID) || 111;
+
 // Prevent to load scripts before compilation and typechain
 if (!SKIP_LOAD) {
   ['misc', 'migrations', 'dev', 'full', 'verifications', 'deployments', 'helpers'].forEach(
@@ -144,21 +150,15 @@ const buidlerConfig: HardhatUserConfig = {
       },
     },
     neonlabs: {
-      url: 'http://127.0.0.1:9090/solana',
-      accounts: [
-        '0x41167312f8c46439b2bcc5e5a6af929262efcd20357a56ebcbc455d835d9f080',
-        '0x41167312f8c46439b2bcc5e5a6af929262efcd20357a56ebcbc455d835d9f081',
-        '0x41167312f8c46439b2bcc5e5a6af929262efcd20357a56ebcbc455d835d9f082',
-        '0x41167312f8c46439b2bcc5e5a6af929262efcd20357a56ebcbc455d835d9f083',
-        '0x41167312f8c46439b2bcc5e5a6af929262efcd20357a56ebcbc455d835d9f084',
-      ],
+      url: proxyUrl,
+      accounts: accounts,
       // @ts-ignore
-      network_id: 111,
-      chainId: 111,
+      network_id: chainId,
+      chainId: chainId,
       allowUnlimitedContractSize: false,
       timeout: 100000000,
       // @ts-ignore
-      isFork: true
+      isFork: true,
     },
     devnet: {
       url: 'https://proxy.devnet.neonlabs.org/solana',
