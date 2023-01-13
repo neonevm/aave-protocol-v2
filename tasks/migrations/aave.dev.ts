@@ -19,9 +19,6 @@ task('aave:dev', 'Deploy development enviroment')
 
     console.log('Migration started\n');
     // NOTE: checking chainlink oracle
-    let chainlinkOracle = await getChainlinkOracle('0x80662336874834355167abA8f524093e6ff77024');
-    let price = (await chainlinkOracle.latestRoundData())[1];
-    console.log(`Token price: ${price}`);
 
     console.log('1. Deploy mock tokens');
     await localBRE.run('dev:deploy-mock-tokens', { verify });
@@ -40,6 +37,10 @@ task('aave:dev', 'Deploy development enviroment')
 
     console.log('6. Initialize lending pool');
     await localBRE.run('dev:initialize-lending-pool', { verify, pool: POOL_NAME });
+
+    let chainlinkOracle = await getChainlinkOracle('0x80662336874834355167abA8f524093e6ff77024');
+    let price = (await chainlinkOracle.latestRoundData())[1];
+    console.log(`Token price: ${price}`);
 
     console.log('\nFinished migration');
     printContracts();
