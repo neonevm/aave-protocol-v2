@@ -155,7 +155,9 @@ const buidlerConfig: HardhatUserConfig = {
       // @ts-ignore
       network_id: chainId,
       chainId: chainId,
-      allowUnlimitedContractSize: false,
+      allowUnlimitedContractSize: true,
+      gas: DEFAULT_BLOCK_GAS_LIMIT,
+      gasPrice: 8000000000,
       timeout: 100000000,
       // @ts-ignore
       isFork: true,

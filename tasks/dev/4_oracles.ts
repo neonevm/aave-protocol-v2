@@ -97,4 +97,5 @@ task('dev:deploy-oracles', 'Deploy oracles for dev environment')
       lendingRateOracle,
       admin
     );
+    return proxyOracle.address;
   });

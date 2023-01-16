@@ -30,17 +30,17 @@ task('aave:dev', 'Deploy development enviroment')
     await localBRE.run('dev:deploy-lending-pool', { verify, pool: POOL_NAME });
 
     console.log('4. Deploy oracles');
-    await localBRE.run('dev:deploy-oracles', { verify, pool: POOL_NAME });
+    let address = await localBRE.run('dev:deploy-oracles', { verify, pool: POOL_NAME });
+    console.log(`Chainlink oracle address: ${address}`);
+    let chainlinkOracle = await getChainlinkOracle(address);
+    let price = (await chainlinkOracle.latestRoundData())[1];
+    console.log(`Token price: ${price}`);
 
     console.log('5. Deploy WETH Gateway');
     await localBRE.run('full-deploy-weth-gateway', { verify, pool: POOL_NAME });
 
     console.log('6. Initialize lending pool');
     await localBRE.run('dev:initialize-lending-pool', { verify, pool: POOL_NAME });
-
-    let chainlinkOracle = await getChainlinkOracle('0x80662336874834355167abA8f524093e6ff77024');
-    let price = (await chainlinkOracle.latestRoundData())[1];
-    console.log(`Token price: ${price}`);
 
     console.log('\nFinished migration');
     printContracts();
