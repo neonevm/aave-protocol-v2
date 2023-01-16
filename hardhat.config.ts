@@ -153,11 +153,11 @@ const buidlerConfig: HardhatUserConfig = {
       url: proxyUrl,
       accounts: neon_accounts,
       // @ts-ignore
-      network_id: chainId,
+      // network_id: chainId,
       chainId: chainId,
-      allowUnlimitedContractSize: true,
-      gas: DEFAULT_BLOCK_GAS_LIMIT,
-      gasPrice: 8000000000,
+      allowUnlimitedContractSize: false,
+      //gas: DEFAULT_BLOCK_GAS_LIMIT,
+      //gasPrice: 8000000000,
       timeout: 100000000,
       // @ts-ignore
       isFork: true,
