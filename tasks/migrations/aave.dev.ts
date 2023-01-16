@@ -3,8 +3,6 @@ import { checkVerification } from '../../helpers/etherscan-verification';
 import { ConfigNames } from '../../helpers/configuration';
 import { printContracts } from '../../helpers/misc-utils';
 
-import { getChainlinkOracle } from '../../helpers/contracts-getters';
-
 task('aave:dev', 'Deploy development enviroment')
   .addFlag('verify', 'Verify contracts at Etherscan')
   .setAction(async ({ verify }, localBRE) => {
@@ -18,7 +16,6 @@ task('aave:dev', 'Deploy development enviroment')
     }
 
     console.log('Migration started\n');
-    // NOTE: checking chainlink oracle
 
     console.log('1. Deploy mock tokens');
     await localBRE.run('dev:deploy-mock-tokens', { verify });
@@ -30,11 +27,7 @@ task('aave:dev', 'Deploy development enviroment')
     await localBRE.run('dev:deploy-lending-pool', { verify, pool: POOL_NAME });
 
     console.log('4. Deploy oracles');
-    let address = await localBRE.run('dev:deploy-oracles', { verify, pool: POOL_NAME });
-    console.log(`Chainlink oracle address: ${address}`);
-    let chainlinkOracle = await getChainlinkOracle(address);
-    let price = (await chainlinkOracle.latestRoundData())[1];
-    console.log(`Token price: ${price}`);
+    await localBRE.run('dev:deploy-oracles', { verify, pool: POOL_NAME });
 
     console.log('5. Deploy WETH Gateway');
     await localBRE.run('full-deploy-weth-gateway', { verify, pool: POOL_NAME });

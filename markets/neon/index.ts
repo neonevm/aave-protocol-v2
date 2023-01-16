@@ -6,9 +6,6 @@ import {
   strategyUSDC,
   strategyUSDT,
   strategyWETH,
-  strategyDAI,
-  strategyAAVE, 
-  strategyTUSD
 } from './reservesConfigs';
 
 // ----------------
@@ -20,12 +17,9 @@ export const NeonConfig: INeonConfiguration = {
   MarketId: 'Aave genesis market',
   ProviderId: 1,
   ReservesConfig: {
-    DAI: strategyDAI,
-    AAVE: strategyAAVE,
-    TUSD: strategyTUSD,
-    // USDC: strategyUSDC,
-    // USDT: strategyUSDT,
-    // WETH: strategyWETH,
+    USDC: strategyUSDC,
+    USDT: strategyUSDT,
+    WETH: strategyWETH,
   },
   ReserveAssets: {
     [eNeonNetwork.neonlabs]: {

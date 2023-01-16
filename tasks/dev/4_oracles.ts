@@ -1,7 +1,6 @@
 import { task } from 'hardhat/config';
 import {
   deployPriceOracle,
-  deployProxyOracle,
   deployAaveOracle,
   deployLendingRateOracle,
 } from '../../helpers/contracts-deployments';
@@ -48,22 +47,12 @@ task('dev:deploy-oracles', 'Deploy oracles for dev environment')
 
     const fallbackOracle = await deployPriceOracle(verify);
     await waitForTx(await fallbackOracle.setEthUsdPrice(MockUsdPriceInWei));
-
     await setInitialAssetPricesInOracle(AllAssetsInitialPrices, mockTokensAddress, fallbackOracle);
 
+    const mockAggregators = await deployAllMockAggregators(AllAssetsInitialPrices, verify);
+
     const allTokenAddresses = getAllTokenAddresses(mockTokens);
-
-    console.log('Deploying proxy oracle');
-    const proxyOracle = await deployProxyOracle(
-      '0x80662336874834355167abA8f524093e6ff77024',
-      verify
-    );
-
-    const allAggregatorsAddresses = {
-      DAI: proxyOracle.address,
-      AAVE: proxyOracle.address,
-      TUSD: proxyOracle.address,
-    };
+    const allAggregatorsAddresses = getAllAggregatorsAddresses(mockAggregators);
 
     const [tokens, aggregators] = getPairsTokenAggregator(
       allTokenAddresses,
@@ -71,7 +60,7 @@ task('dev:deploy-oracles', 'Deploy oracles for dev environment')
       OracleQuoteCurrency
     );
 
-    const aaveOracle = await deployAaveOracle(
+    await deployAaveOracle(
       [
         tokens,
         aggregators,
@@ -81,7 +70,7 @@ task('dev:deploy-oracles', 'Deploy oracles for dev environment')
       ],
       verify
     );
-    await waitForTx(await addressesProvider.setPriceOracle(aaveOracle.address));
+    await waitForTx(await addressesProvider.setPriceOracle(fallbackOracle.address));
 
     const lendingRateOracle = await deployLendingRateOracle(verify);
     await waitForTx(await addressesProvider.setLendingRateOracle(lendingRateOracle.address));
@@ -90,12 +79,10 @@ task('dev:deploy-oracles', 'Deploy oracles for dev environment')
     const allReservesAddresses = {
       ...tokensAddressesWithoutUsd,
     };
-
     await setInitialMarketRatesInRatesOracleByHelper(
       LendingRateOracleRatesCommon,
       allReservesAddresses,
       lendingRateOracle,
       admin
     );
-    return proxyOracle.address;
   });
