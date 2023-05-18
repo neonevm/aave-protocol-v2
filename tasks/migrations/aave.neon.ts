@@ -268,6 +268,9 @@ task('aave:neon', 'Test scenarios on NEON')
       DRE.ethers.utils.formatUnits(amountUSDCToBorrow.toString(), 6),
       ' USDC'
     );
+    // add 30 sec sleep
+    await new Promise((r) => setTimeout(r, 30000));
+
     await lendingPool
       .connect(borrower)
       .borrow(USDC.address, amountUSDCToBorrow, '1', '0', borrower.address);
@@ -310,6 +313,8 @@ task('aave:neon', 'Test scenarios on NEON')
 
     console.log('');
     console.log('Performing liquidation ...');
+    await new Promise((r) => setTimeout(r, 30000));
+
     await lendingPool
       .connect(liquidator)
       .liquidationCall(WETH.address, USDC.address, borrower.address, amountToLiquidate, false);
